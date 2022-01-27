@@ -52,7 +52,7 @@ news.tail(20)
 
 ### Primero hablemos de los nullos.
 
-# Veamos cuantos nulls hay en las distintas variables
+### Veamos cuantos nulls hay en las distintas variables
 import missingno as msno
 %matplotlib inline
 msno.matrix(df.sample(250))
@@ -61,15 +61,15 @@ msno.bar(df)
 
 Vemos que en todo lo que son las variables de los críticos hay muchos blancos. De hecho hasta casi la mitad de las muestras!
 
-# Primero actuemos sobre los que faltan de YEAR. Descartemoslos.  
+### Primero actuemos sobre los que faltan de YEAR. Descartemoslos.  
 df= df.dropna(subset=["Year_of_Release"])
 
-# Actualizamos el cuadro de arriba y ahora quedaron algunos blancos en Name, en Genre y en Publisher. Eliminemos el de Name ya que es un juego sin nombre...
+### Actualizamos el cuadro de arriba y ahora quedaron algunos blancos en Name, en Genre y en Publisher. Eliminemos el de Name ya que es un juego sin nombre...
 df= df.dropna(subset= ["Name"])
 
 df
 
-# Quiero ver como aparecen los vacíos en las columnas que tienen faltantes
+### Quiero ver como aparecen los vacíos en las columnas que tienen faltantes
 df[["Critic_Count", "Critic_Count", "User_Score", "User_Count", "Developer", "Rating"]].head(40)
 
 history[["Critic_Count", "Critic_Count", "User_Score", "User_Count", "Developer", "Rating"]].head(40)
@@ -84,7 +84,7 @@ df.shape
 df_con_resena= df.dropna(thresh= 11)
 df_con_resena
 
-# ¡ ME quede con 9940 filas ! Veamos el grafico de los nulls denuevo.
+### ¡ ME quede con 9940 filas ! Veamos el grafico de los nulls denuevo.
 msno.bar(df_con_resena)
 
 Ahora quiero llenar los ausentes en las críticas, y podemos llenarlo así. A modo diccionario
@@ -110,7 +110,7 @@ df_con_resena["User_Score"].unique()
 
 tbd is to be determined! Let´s fill that Na = tbd
 
-# Lets fill NAs !
+## Lets fill NAs !
 values= {"Publisher": "No publisher Identified", 
          "Critic_Score": df_con_resena["Critic_Score"].mean(),
          "Critic_Count": df_con_resena["Critic_Count"].median(),
@@ -124,10 +124,10 @@ df_con_resenaR
 if df_con_resenaR["User_Score"]== "tbd":
     pd.count()
 
-# Veamos como quedan los blancs para este nuevo dataFrame rellenado (de ahí la R del final del nombre)
+## Veamos como quedan los blancs para este nuevo dataFrame rellenado (de ahí la R del final del nombre)
 msno.bar(df_con_resenaR)
 
-# Perfecto!!! Todo lleno
+### Perfecto!!! Todo lleno
 
 categoricas
 
@@ -154,9 +154,9 @@ for i in catsGrafic:
   draw.set_xticklabels(draw.get_xticklabels(), rotation="45", ha="right")
   plt.show()
 
-#  Acción y Deportes liderando siempre!
+###  Acción y Deportes liderando siempre!
 
-## Play2 y Xbox 360 las dos consolas más populares
+### Play2 y Xbox 360 las dos consolas más populares
 
 Vamos a hacer también un count para el año!
 
@@ -212,14 +212,14 @@ grafDistr(df, "JP_Sales", range_max=0.99)
 
 grafDistr(df, "Global_Sales", range_max=0.99)
 
-# Chequiemos a que se refiere con global sales, haciendo una nueva columna TOTAL SALES, sumando todos los datos que tenemos
+## Chequiemos a que se refiere con global sales, haciendo una nueva columna TOTAL SALES, sumando todos los datos que tenemos
 df["total_sales"]= df["NA_Sales"] + df["EU_Sales"] + df["JP_Sales"]+ df["Other_Sales"]
 df
 
-## ¡Remember the sales are in millions!
+### ¡Remember the sales are in millions!
 
 grafDistr(df, "total_sales", range_max=0.99)
-# Vemos que son casi lo mism que Global_Sales 
+## Vemos que son casi lo mism que Global_Sales 
 
 ![image.png](attachment:image.png)
 
@@ -231,11 +231,11 @@ grafDistr(df_con_resenaR, "Critic_Score", clr= "red")
 
 The high bar is because we filledNA with median! Remember!
 
-# Agrego también el sin relleno para ver que el critic score ya tenía un pico en la mediana. 
+## Agrego también el sin relleno para ver que el critic score ya tenía un pico en la mediana. 
 draw1= grafDistr(df_con_resena, "Critic_Score", clr= "red")
 
 grafDistr(df_con_resenaR, "User_Score", clr= "green")
-# vemos que en user_score tenemos el tbd. Por lo tanto no me deja ver la distrib
+### vemos que en user_score tenemos el tbd. Por lo tanto no me deja ver la distrib
 
 ### The above error is because, as we show below, between the user_score we have tbd, making the whole column an "object". We must drop this values and graph 
 
@@ -246,20 +246,20 @@ user3["User_Score"]= user3["User_Score"].astype("float")
 
 user3.dtypes
 
-# Ahora que desechamos los tbd. Hagamos un count plot de los user_score
+## Ahora que desechamos los tbd. Hagamos un count plot de los user_score
 draw2= grafDistr(user3,"User_Score",clr="green")
 
 We can see the main values for User´s score are higher than Critic Score
 
 # -----------------------------------------------------------------------------------------------------------------
 
-## Now let´s try to see sales by Platform
+### Now let´s try to see sales by Platform
 
-### For that we will use the total_sales and the timeline. Grouping by Platform
+#### For that we will use the total_sales and the timeline. Grouping by Platform
 
 df_con_resenaR.head()
 
-# Vemos que el index ta en cualquiera
+
 df1= df_con_resenaR.reset_index()
 df1
 
@@ -274,15 +274,15 @@ Hagamos un df separado con estas cols
 df_group= df1.loc[:, ["Year_of_Release", "Platform", "Global_Sales", "User_Count"]]
 df_group
 
-# sum = df.groupby(["year", "month"]).agg({"score": "sum", "num_attempts": "sum"}).reset_index()
+## sum = df.groupby(["year", "month"]).agg({"score": "sum", "num_attempts": "sum"}).reset_index()
 grupi= df_group.groupby(["Year_of_Release", "Platform"]).agg({"Global_Sales": "sum", "User_Count": "sum"}).reset_index()
 
-# Otra forma de hacerlo.
-# df_sales_by_year = df.pivot_table(index = ['year',
+## Otra forma de hacerlo.
+### df_sales_by_year = df.pivot_table(index = ['year',
                                           # 'platform'], 
                                   #values = 'sum_sales', 
                                   #aggfunc = 'sum').reset_index()
-# df_sales_by_year
+### df_sales_by_year
 
 grupi["Year_of_Release"]= grupi["Year_of_Release"].astype("int")
 
@@ -320,8 +320,8 @@ best_year
 
 ## Best Year= 2008 
 
-# All this belonged to the df_con_reseñaR, let´s try to do it with df, our initial dataframe
-# sum = df.groupby(["year", "month"]).agg({"score": "sum", "num_attempts": "sum"}).reset_index()
+### All this belonged to the df_con_reseñaR, let´s try to do it with df, our initial dataframe
+## sum = df.groupby(["year", "month"]).agg({"score": "sum", "num_attempts": "sum"}).reset_index()
 df_grouped= df.groupby(["Year_of_Release", "Platform"]).agg({"Global_Sales": "sum", "User_Count": "sum"}).reset_index()
 
 best_total_platform= df_grouped.groupby("Platform")["Global_Sales"].sum().sort_values(ascending= False)
@@ -330,7 +330,7 @@ best_total_platform
 best_total_year= df_grouped.groupby("Year_of_Release")["Global_Sales"].sum().sort_values(ascending=False)
 best_total_year
 
-## Best Platform is still PS2 and best year is still 2008 
+### Best Platform is still PS2 and best year is still 2008 
 
 Primero grafiquemos en el tiempo únicamente a los que tienen más de 200 millones de ventas
 
@@ -480,7 +480,7 @@ game_platform
 
 game_platform.head(10)
 
-## But look at that! If you split platforms, FIFA 16 for PS4 is the one with highest Sales 
+### But look at that! If you split platforms, FIFA 16 for PS4 is the one with highest Sales 
 
 game_critic= soccer.groupby(["Name", "Platform"])["Critic_Score"].sum().sort_values(ascending= False)
 
@@ -488,7 +488,7 @@ game_critic.head(10)
 
 game_critic.tail(10)
 
-# I want to see the lowest critics different to 0.
+## I want to see the lowest critics different to 0.
 deportes_with_critic= df_con_resenaR.loc[df["Genre"]== "Sports"]
 soccer_with_critic= deportes_with_critic[deportes_with_critic['Name'].str.contains("FIFA|PES|Soccer")]
 
@@ -531,7 +531,7 @@ ax = sns.barplot(x="Name", y="JP_Sales", hue= "Platform", data=soccer_TOP)
 ax.set_title("Sales in JAPAN for Top Games")
 plt.show()
 
-# This graph is not good to show what we wanna show.
+### This graph is not good to show what we wanna show.
 
 import seaborn as sns
 sns.set_theme(style="whitegrid")
